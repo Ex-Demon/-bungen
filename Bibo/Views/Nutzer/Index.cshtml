@@ -1,0 +1,58 @@
+﻿@using System.Web.Mvc.Html
+@model List<Bibo.Nutzer>
+
+@{
+	ViewBag.Title = "Benutzerverwaltung";
+}
+
+@ViewBag.Msg
+
+
+<h2>Benutzerverwaltung</h2>
+
+@Html.ActionLink("Home", "Index", "Home") <br/>
+
+<table class="overview">
+	<tr>
+		<th>@Html.LabelFor(e => @Model[0].Name)</th>
+		<th>@Html.LabelFor(e => @Model[0].Vormane)</th>
+		<th>@Html.LabelFor(e => @Model[0].Geburtsdatum)</th>
+		<th>Löschen</th>
+		<th>Anz. Bücher</th>
+	</tr>
+	@foreach (var nutzer in Model)
+ {
+		<tr>
+			<td>@nutzer.Name</td>
+			<td>@nutzer.Vormane</td>
+			<td>@nutzer.Geburtsdatum.ToShortDateString()</td>
+			<td>
+				@if (@nutzer.AusleiheList.Count == 0)
+				{
+					@Html.ActionLink("Löschen", "Delete", new {id = nutzer.Id})
+				}
+				else
+				{
+					<text>Der hat geklaut</text>
+				}
+
+				@*@Html.ActionLink("Löschen", "Delete", new {id = nutzer.Id})*@
+
+			</td>
+			<td>
+				@if (@nutzer.AusleiheList.Count > 0)
+				{
+					@Html.ActionLink(@nutzer.AusleiheList.Count.ToString(), "AusleiheOverview", new { nutzerId = nutzer.Id})
+				}
+				else
+				{
+					@nutzer.AusleiheList.Count
+				}
+			</td>
+		</tr>
+ }
+</table>
+
+@Html.ActionLink("Nutzer anlegen","New")
+
+

@@ -1,0 +1,89 @@
+﻿@using System.Web.Mvc.Html
+@using Bibo
+@model List<Bibo.Buch>
+
+@{
+	ViewBag.Title = "test test test";
+}
+
+@ViewBag.Msg
+
+<h2>ob das funkt ?</h2>
+
+@Html.ActionLink("Home", "Index", "Home") <br/>
+
+
+<table class="overview">
+	<tr>
+		<th>@Html.LabelFor(e => @Model[0].Titel)</th>
+		<th>@Html.LabelFor(e => @Model[0].Autor)</th>
+		<th>@Html.LabelFor(e => @Model[0].ISBN)</th>
+
+		@if (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin")
+
+		{
+			<th>Löschen</th>	
+		}
+
+		<th>ausleihen</th>
+		<th>Reservieren</th>
+	</tr>
+	@foreach (var buch in Model)
+ {
+		<tr>
+			<td>@buch.Titel</td>
+			<td>@buch.Autor</td>
+			<td>@buch.ISBN</td>
+
+			@if (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin")
+			{
+				<td>
+					@if (@buch.AusgeliehenBis == null)
+					{
+						@Html.ActionLink("Löschen", "Delete", new {id = buch.Id})
+					}
+					else if (@Session["user_Login"] != null)
+					{
+						<text>Ist weg</text>
+					}
+
+				</td>
+			}
+				<td>
+
+					@if (buch.AusgeliehenBis == null && (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin"))
+					{
+						@Html.ActionLink("Ausleihen", "New", "Ausleihe", new {buchId = buch.Id}, null)
+					}
+					else if (@buch.Reservierung == null)
+					{
+						<text>Pech gehabt !! Versuchs am:</text>
+						@buch.AusgeliehenBis
+						<text>wieder.</text>
+					}
+					else
+					{
+						<text>Pech gehabt !! Es ist reserviert.</text>
+						<text>Ha Ha Ha</text>
+					}
+				</td>
+			<td>
+				@if (@buch.Reservierung == null)
+				{
+					@Html.ActionLink("reservieren", "New", "Reservierung", new {buchId = buch.Id}, null)
+				}
+				else
+				{
+					<p>reserviert bis: </p>@buch.Reservierung.GueltigBis
+				}
+			</td>
+
+		</tr>
+ }
+</table>
+
+@if (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin")
+{
+	@Html.ActionLink("Buch anlegen","New")
+}
+

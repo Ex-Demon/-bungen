@@ -1,0 +1,32 @@
+﻿@model Bibo.Nutzer
+
+@{
+    ViewBag.Title = "Schreiber Keiler Weiser";
+}
+
+@Html.ValidationSummary()
+
+<h2>Nutzer anlegen / bearbeiten</h2>
+
+@using (Html.BeginForm())
+{
+	<table>
+		<tr>
+			<th>@Html.LabelFor(nutzer => nutzer.Name)</th>
+			<th>@Html.LabelFor(nutzer => nutzer.Vormane)</th>
+			<th>@Html.LabelFor(nutzer => nutzer.Geburtsdatum)</th>
+			<th>@Html.LabelFor(nutzer => nutzer.Login)</th>
+			<th>@Html.LabelFor(nutzer => nutzer.Passwort)</th>
+		</tr>
+		<tr>
+			<td>@Html.TextBoxFor(nutzer => nutzer.Name)</td>
+			<td>@Html.TextBoxFor(nutzer => nutzer.Vormane)</td>
+			<td>@Html.EditorFor(nutzer => nutzer.Geburtsdatum)</td>
+			<td>@Html.EditorFor(nutzer => nutzer.Login)</td>
+			<td>@Html.PasswordFor(nutzer => nutzer.Passwort)</td>
+		</tr>
+	</table>
+
+	<input type="submit" value="Zu den Stasi-Akten packen"/>
+
+}

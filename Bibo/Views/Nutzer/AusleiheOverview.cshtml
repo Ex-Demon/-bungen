@@ -1,0 +1,40 @@
+﻿@using Bibo
+@model Nutzer
+@{
+	ViewBag.Title = "Kack Bücher die Weg sind!";
+}
+
+<h2>Die wurden geklaut!</h2>
+
+<p style="font-weight: bolder">Aktueller Nutzer: @Model.Name,@Model.Vormane</p>
+
+<table class="overview">
+	<tr>
+		<th>@Html.LabelFor(e => new Buch().Titel)</th>
+		<th>@Html.LabelFor(e => new Buch().Autor)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Bis)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Rueckgabe)</th>
+	</tr>
+	@foreach (var ausleihe in Model.AusleiheList)
+ {
+		<tr>
+			<td>@ausleihe.Buch.Titel</td>
+			<td>@ausleihe.Buch.Autor</td>
+			<td>@ausleihe.Bis</td>
+			<td>
+
+
+				@if (ausleihe.Rueckgabe == null && @Session["user_Login"].Equals("Admin"))
+	{
+					@Html.ActionLink("Zurückgeben", "Return", new { id = ausleihe.Id })
+	}
+	else
+	{
+					@ausleihe.Rueckgabe
+	}
+			</td>
+		</tr>
+ }
+</table>
+
+@Html.ActionLink("Zurück zur Übersicht",null, null, null, new { href=Request.UrlReferrer})

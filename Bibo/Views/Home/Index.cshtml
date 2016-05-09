@@ -1,0 +1,35 @@
+﻿@using Bibo
+@{
+	ViewBag.Title = "NewIndex";
+}
+
+@if (@Session["user_Login"] != null)
+{
+	<h3>Angemeldet als: @Session["user_Login"].ToString()</h3>
+}
+
+
+<h2>Hauptmenü</h2>
+
+@if (Request.IsAuthenticated)
+{
+	if (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin")
+	{
+	@Html.ActionLink("Nutzer", "Index", "Nutzer")
+	<br />
+	@Html.ActionLink("Wiederherstellen", "Reset")
+	<br/>
+	@Html.ActionLink("Ausleihe", "Index", "Ausleihe")
+	<br />
+	}
+	else if (@Session["user_Login"] != null)
+	{
+		@Html.ActionLink("Ausgeliehene Bücher", "AusleiheOverview", "Nutzer", new { nutzerid = (int) @Session["user_ID"]}, null)
+	}
+	<br/>
+	@Html.ActionLink("Bücher", "Index", "Buch")
+	<br/>	
+	@Html.ActionLink("Bin Weg", "Logout", "Home")
+	<br/>
+	
+}

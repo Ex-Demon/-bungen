@@ -1,0 +1,63 @@
+﻿@using System.Runtime.Remoting.Messaging
+@using System.ServiceModel
+@using System.Web.Mvc.Html
+@using Bibo
+@model List<Bibo.Ausleihe>
+
+@{
+	ViewBag.Title = "Wo ist mein buch !!!!";
+}
+
+<h2>Rückgabe Zeiten</h2>
+
+@Html.ActionLink("Home", "Index", "Home")
+<br />
+
+<table class="overview">
+	<tr>
+		<th>@Html.LabelFor(e => new Ausleihe().Buch.Titel)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Buch.Autor)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Nutzer.Name)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Nutzer.Vormane)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Von)</th>
+		<th>@Html.LabelFor(e => new Ausleihe().Bis)</th>
+
+		@if (@Session["user_Login"] != null && @Session["user_Login"].Equals("Admin"))
+			{
+			<th>@Html.LabelFor(e => new Ausleihe().Rueckgabe)</th>
+			<th>Löschen</th>
+			}
+	</tr>
+	@foreach (var ausleihe in Model)
+ {
+		<tr>
+			<td>@ausleihe.Buch.Titel</td>
+			<td>@ausleihe.Buch.Autor</td>
+			<td>@ausleihe.Nutzer.Name</td>
+			<td>@ausleihe.Nutzer.Vormane</td>
+			<td>@ausleihe.Von</td>
+			<td>@ausleihe.Bis</td>
+			<td>
+			@if (@Session["user_Login"] != null && @Session["user_Login"].ToString() == "Admin")
+			{
+				if (ausleihe.Rueckgabe == null)
+				{
+					@Html.ActionLink("Zurückgeben", "Return", new {id = ausleihe.Id})
+				}
+				else
+				{
+					@ausleihe.Rueckgabe
+				}
+			}
+
+			
+				
+				
+			</td>
+		</tr>
+ }
+</table>
+
+@*@Html.ActionLink("Nutzer anlegen","New")
+
+@Html.ActionLink("Wiederherstellen","Reset")*@
